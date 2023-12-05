@@ -49,8 +49,9 @@ export const NewEnumForm = () => {
               </span>
             </div>
             <textarea
-              placeholder="Type here"
+              placeholder="Comma(,) seperated values (option1,option2...)"
               className="textarea textarea-bordered w-full max-w-xs"
+              rows={5}
             />
           </label>
         </div>
