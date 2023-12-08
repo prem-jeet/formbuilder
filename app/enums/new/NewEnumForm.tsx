@@ -77,7 +77,7 @@ export const NewEnumForm = () => {
     }
 
     const rsp = await createEnum(newEnumObject);
-    if (rsp.error) {
+    if (!rsp.success) {
       toast.custom(FormErrorAlert(rsp.msg));
     } else {
       toast.success("Enum added successfully!", { position: "top-center" });

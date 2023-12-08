@@ -4,20 +4,31 @@ import { EnumFormSchema } from "@/validationSchemas/validationSchemas";
 
 const API_ENDPOINT = process.env.API_ENDPOINT;
 
-interface Enum {
+type Enum = {
   name: string;
   label: string;
   options: string[];
-}
+};
 
-export const createEnum = async (newEnum: Enum) => {
+type Error = {
+  success: false;
+  msg: string;
+};
+
+type Success = {
+  success: true;
+  data: Enum;
+};
+type ApiResponse = Error | Success;
+
+export const createEnum = async (newEnum: Enum): Promise<ApiResponse> => {
   const validate = EnumFormSchema.safeParse(newEnum);
   if (!validate.success) {
-    return { error: true, msg: "validation error" };
+    return { success: false, msg: "validation error" };
   }
 
-  if (API_ENDPOINT) {
-    try {
+  try {
+    if (API_ENDPOINT) {
       const rsp = await fetch(API_ENDPOINT, {
         method: "POST",
         headers: {
@@ -31,20 +42,19 @@ export const createEnum = async (newEnum: Enum) => {
       if (res.message) {
         const error = res.data as { [key: string]: { message: string } };
         return {
-          error: true,
+          success: false,
           msg: Object.entries(error).reduce(
             (acc, entry) => acc + `${entry[0]}  ${entry[1].message}\n`,
             ""
           ),
         };
       } else {
-        return { ...res, error: false, msg: "" } as Enum & {
-          error: boolean;
-          msg: string;
-        };
+        return { data: { ...res }, success: true };
       }
-    } catch (e) {
-      return { error: true, msg: "some unexpected error occured!" };
+    } else {
+      throw new Error("");
     }
+  } catch (e) {
+    return { success: false, msg: "some unexpected error occured!" };
   }
 };
