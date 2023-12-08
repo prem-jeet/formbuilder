@@ -18,14 +18,15 @@ export const Navbar = () => {
         </div>
         <div className="flex-none space-x-5">
           {links.map((link) => (
-            <button
-              key={link.label}
-              className={`btn btn-primary ${
-                pathname === link.href && "btn-outline"
-              }`}
-            >
-              <Link href={link.href}>{link.label}</Link>
-            </button>
+            <Link key={link.label} href={link.href}>
+              <button
+                className={`btn btn-primary ${
+                  pathname === link.href && "btn-outline"
+                }`}
+              >
+                {link.label}
+              </button>
+            </Link>
           ))}
         </div>
       </div>
