@@ -8,7 +8,7 @@ const EnumsPage = async () => {
   const rsp = await fetchEnums();
 
   return (
-    <div className="flex items-center flex-col">
+    <div className="flex items-center flex-col space-y-9">
       <div className="flex self-stretch items-center justify-between">
         <span className="text-3xl text-zinc-800 font-bold">Enumns list</span>
         <Link href="/enums/new">
@@ -18,7 +18,7 @@ const EnumsPage = async () => {
           </button>
         </Link>
       </div>
-      <div>
+      <div className="self-stretch">
         {rsp.success ? <EnumsList enums={rsp.data} /> : <>No Data found</>}
       </div>
     </div>
