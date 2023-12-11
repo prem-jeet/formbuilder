@@ -1,8 +1,12 @@
 import { FaPlus } from "react-icons/fa";
 import React from "react";
 import Link from "next/link";
+import { fetchEnums } from "./utils";
+import { EnumsList } from "./EnumsList";
 
-const EnumsPage = () => {
+const EnumsPage = async () => {
+  const rsp = await fetchEnums();
+
   return (
     <div className="flex items-center flex-col">
       <div className="flex self-stretch items-center justify-between">
@@ -13,6 +17,9 @@ const EnumsPage = () => {
             Add record
           </button>
         </Link>
+      </div>
+      <div>
+        {rsp.success ? <EnumsList enums={rsp.data} /> : <>No Data found</>}
       </div>
     </div>
   );

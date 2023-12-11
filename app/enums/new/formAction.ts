@@ -4,22 +4,23 @@ import { EnumFormSchema } from "@/validationSchemas/validationSchemas";
 
 const API_ENDPOINT = process.env.API_ENDPOINT;
 
-type Enum = {
+export type Enum = {
   name: string;
   label: string;
   options: string[];
 };
 
-type Error = {
+export type Error = {
   success: false;
   msg: string;
 };
 
-type Success = {
+export type Success = {
   success: true;
   data: Enum;
 };
-type ApiResponse = Error | Success;
+
+export type ApiResponse = Error | Success;
 
 export const createEnum = async (newEnum: Enum): Promise<ApiResponse> => {
   const validate = EnumFormSchema.safeParse(newEnum);
