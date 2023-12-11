@@ -21,8 +21,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="min-h-screen bg-base-200">
           <Navbar />
-          <main className="flex flex-col items-center px-10 py-5">
-            {children}
+          <main className="flex py-10 ">
+            <div className="container px-3 mx-auto">{children}</div>
           </main>
         </div>
         <div>
