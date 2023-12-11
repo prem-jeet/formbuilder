@@ -4,14 +4,16 @@ import Link from "next/link";
 
 const EnumsPage = () => {
   return (
-    <div>
-      Enumns list
-      <Link href="/enums/new">
-        <button className="btn btn-neutral">
-          <FaPlus />
-          Enum
-        </button>
-      </Link>
+    <div className="flex items-center flex-col">
+      <div className="flex self-stretch items-center justify-between">
+        <span className="text-3xl text-zinc-800 font-bold">Enumns list</span>
+        <Link href="/enums/new">
+          <button className="btn btn-neutral">
+            <FaPlus />
+            Add record
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };
