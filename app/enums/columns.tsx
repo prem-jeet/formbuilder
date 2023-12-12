@@ -10,17 +10,19 @@ export const columns: ColumnDef<Enum>[] = [
 
     header: ({ column }) => {
       return (
-        <button
-          className="btn btn-ghost"
+        <span
+          className="flex items-center space-x-3 cursor-pointer "
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
-          {column.getIsSorted() === "asc" ? (
-            <FaSortAlphaDown className="ml-2 h-4 w-4" />
-          ) : (
-            <FaSortAlphaDownAlt className="ml-2 h-4 w-4" />
-          )}
-        </button>
+          <span>Name</span>
+          <span className="text-slate-400">
+            {column.getIsSorted() === "asc" ? (
+              <FaSortAlphaDown />
+            ) : (
+              <FaSortAlphaDownAlt />
+            )}
+          </span>
+        </span>
       );
     },
   },
@@ -28,17 +30,19 @@ export const columns: ColumnDef<Enum>[] = [
     accessorKey: "label",
     header: ({ column }) => {
       return (
-        <button
-          className="btn btn-ghost"
+        <span
+          className="flex items-center space-x-3 cursor-pointer"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Label
-          {column.getIsSorted() === "asc" ? (
-            <FaSortAlphaDown className="ml-2 h-4 w-4" />
-          ) : (
-            <FaSortAlphaDownAlt className="ml-2 h-4 w-4" />
-          )}
-        </button>
+          <span>Label</span>
+          <span className="text-slate-400">
+            {column.getIsSorted() === "asc" ? (
+              <FaSortAlphaDown />
+            ) : (
+              <FaSortAlphaDownAlt />
+            )}
+          </span>
+        </span>
       );
     },
   },
