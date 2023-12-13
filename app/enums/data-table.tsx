@@ -25,6 +25,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [filterBy, setFilterBy] = useState("name");
   const table = useReactTable({
     data,
     columns,
@@ -33,14 +34,11 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    columnResizeMode: "onChange",
     state: {
       sorting,
       columnFilters,
     },
   });
-
-  const [filterBy, setFilterBy] = useState("name");
 
   return (
     <div className="space-y-3">
@@ -74,7 +72,7 @@ export function DataTable<TData, TValue>({
           </select>
         </div>
       </div>
-      <div className="p-1 bg-white rounded-sm shadow-md outline outline-1 outline-slate-300">
+      <div className="p-1 overflow-auto bg-white rounded-sm shadow-md outline outline-1 outline-slate-300">
         <table className="table border-collapse">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -92,16 +90,6 @@ export function DataTable<TData, TValue>({
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                      <div
-                        onMouseDown={header.getResizeHandler()}
-                        onTouchStart={header.getResizeHandler()}
-                        className={cn(
-                          "absolute top-0 right-0 z-10 w-1.5 h-full rounded-sm select-none outline outline-1 outline-sky-200 touch-none bg-sky-400 cursor-col-resize opacity-0 hover:opacity-100",
-                          {
-                            "bg-lime-200": header.column.getIsResizing(),
-                          }
-                        )}
-                      />
                     </th>
                   );
                 })}

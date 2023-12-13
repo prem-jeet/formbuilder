@@ -8,7 +8,6 @@ import { RiArrowUpDownLine } from "react-icons/ri";
 export const columns: ColumnDef<Enum>[] = [
   {
     accessorKey: "name",
-
     header: ({ column }) => {
       return (
         <span
