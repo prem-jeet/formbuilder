@@ -25,6 +25,7 @@ export const fetchEnums = async (): Promise<ApiResponse> => {
     const rsp = await fetch(API_ENDPOINT, {
       next: {
         tags: ["fetchEnums"],
+        revalidate: 300,
       },
     });
     const res = await rsp.json();
