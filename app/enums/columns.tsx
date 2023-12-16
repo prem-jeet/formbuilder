@@ -7,6 +7,27 @@ import { RiArrowUpDownLine } from "react-icons/ri";
 
 export const columns: ColumnDef<Enum>[] = [
   {
+    id: "select",
+    header: ({ table }) => (
+      <input
+        type="checkbox"
+        checked={table.getIsAllPageRowsSelected()}
+        onChange={(e) => table.toggleAllPageRowsSelected(e.target.checked)}
+        className="checkbox"
+      />
+    ),
+    cell: ({ row }) => (
+      <input
+        type="checkbox"
+        checked={row.getIsSelected()}
+        onChange={(e) => row.toggleSelected(e.target.checked)}
+        className="checkbox"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => {
       return (
