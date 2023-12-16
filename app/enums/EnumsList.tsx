@@ -1,5 +1,3 @@
-"use client";
-import React from "react";
 import { Enum } from "./new/formAction";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
