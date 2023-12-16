@@ -1,6 +1,7 @@
 "use server";
 
 import { EnumFormSchema } from "@/validationSchemas/validationSchemas";
+import { revalidatePath } from "next/cache";
 
 const API_ENDPOINT = process.env.API_ENDPOINT;
 
@@ -8,6 +9,7 @@ export type Enum = {
   name: string;
   label: string;
   options: string[];
+  id: string;
 };
 
 export type Error = {
@@ -50,6 +52,7 @@ export const createEnum = async (newEnum: Enum): Promise<ApiResponse> => {
           ),
         };
       } else {
+        revalidatePath("/emums", "page");
         return { data: { ...res }, success: true };
       }
     } else {
