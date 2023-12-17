@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { fetchEnums } from "./utils";
 import { EnumsList } from "./EnumsList";
+import { SomethingWentWrong } from "./SomethingWentWrong";
 
 const EnumsPage = async () => {
   const rsp = await fetchEnums();
@@ -19,7 +20,13 @@ const EnumsPage = async () => {
         </Link>
       </div>
       <div className="self-stretch">
-        {rsp.success ? <EnumsList enums={rsp.data} /> : <>No Data found</>}
+        {rsp.success ? (
+          <EnumsList enums={rsp.data} />
+        ) : (
+          <span className="mt-10">
+            <SomethingWentWrong />
+          </span>
+        )}
       </div>
     </div>
   );
