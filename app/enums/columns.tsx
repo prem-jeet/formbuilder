@@ -8,6 +8,7 @@ import { RiArrowUpDownLine } from "react-icons/ri";
 export const columns: ColumnDef<Enum>[] = [
   {
     id: "select",
+
     header: ({ table }) => (
       <input
         type="checkbox"

@@ -91,7 +91,12 @@ export function DataTable<TData, TValue>({
                   {headerGroup.headers.map((header) => {
                     return (
                       <th
-                        style={{ width: header.getSize() }}
+                        style={{
+                          width:
+                            header.column.columnDef.id === "select"
+                              ? "10px"
+                              : "auto",
+                        }}
                         key={header.id}
                         className="relative outline-1 outline outline-slate-100"
                       >
