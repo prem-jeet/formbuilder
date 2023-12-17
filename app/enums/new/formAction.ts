@@ -10,6 +10,8 @@ export type Enum = {
   label: string;
   options: string[];
   id: string;
+  created: string;
+  updated: string;
 };
 
 export type Error = {

@@ -1,5 +1,5 @@
 "use client";
-
+import { ImCheckboxChecked } from "react-icons/im";
 import {
   ColumnDef,
   flexRender,
@@ -9,6 +9,7 @@ import {
   getSortedRowModel,
   ColumnFiltersState,
   getFilteredRowModel,
+  VisibilityState,
 } from "@tanstack/react-table";
 
 import { useEffect, useState } from "react";
@@ -30,27 +31,36 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [filterBy, setFilterBy] = useState("name");
   const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    id: false,
+    created: false,
+  });
   const [isEditOverlayVisible, setIsEditOverlayVisible] = useState(false);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+
+    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
+    onColumnVisibilityChange: setColumnVisibility,
+
     state: {
       sorting,
       columnFilters,
       rowSelection,
+      columnVisibility,
     },
   });
 
   return (
     <>
       <div className="space-y-3">
-        <div>
+        <div className="flex justify-between items-center">
           <div className="join">
             <div>
               <div>
@@ -83,6 +93,39 @@ export function DataTable<TData, TValue>({
               <option value="name">Name</option>
               <option value="label">Label</option>
             </select>
+          </div>
+          <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-outline btn-secondary"
+            >
+              Columns
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              {table
+                .getAllColumns()
+                .filter((column) => column.id !== "select")
+                .map((column) => (
+                  <li key={column.id} className="form-control">
+                    <label className="label cursor-pointer justify-start">
+                      <input
+                        type="checkbox"
+                        checked={column.getIsVisible()}
+                        onChange={(e) =>
+                          column.toggleVisibility(e.target.checked)
+                        }
+                        disabled={!column.getCanHide()}
+                        className="checkbox checkbox-sm checkbox-info"
+                      />
+                      <span className="label-text uppercase">{column.id}</span>
+                    </label>
+                  </li>
+                ))}
+            </ul>
           </div>
         </div>
         <div className="p-1 overflow-auto bg-white rounded-sm shadow-md outline outline-1 outline-slate-300">

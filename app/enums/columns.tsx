@@ -4,7 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Enum } from "./new/formAction";
 import { FaSortAlphaDown, FaSortAlphaDownAlt } from "react-icons/fa";
 import { RiArrowUpDownLine } from "react-icons/ri";
-
+import { CiCalendar } from "react-icons/ci";
+import { MdOutlineVpnKey } from "react-icons/md";
 export const columns: ColumnDef<Enum>[] = [
   {
     id: "select",
@@ -31,6 +32,15 @@ export const columns: ColumnDef<Enum>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+    header: () => (
+      <span className="flex items-center space-x-1">
+        <MdOutlineVpnKey className="text-md" />
+        <span>ID</span>
+      </span>
+    ),
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => {
       return (
@@ -51,6 +61,7 @@ export const columns: ColumnDef<Enum>[] = [
         </span>
       );
     },
+    enableHiding: false,
   },
   {
     accessorKey: "label",
@@ -73,10 +84,54 @@ export const columns: ColumnDef<Enum>[] = [
         </span>
       );
     },
+    enableHiding: false,
   },
   {
     accessorKey: "options",
     header: "Options",
     cell: ({ row }) => `[ ${row.original.options} ]`,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "updated",
+    header: () => dateFieldHeader("Updated"),
+    cell: ({ row }) => dateFieldCell(new Date(row.original.updated)),
+    enableHiding: true,
+  },
+  {
+    accessorKey: "created",
+    header: () => dateFieldHeader("Created"),
+    cell: ({ row }) => dateFieldCell(new Date(row.original.created)),
+    enableHiding: true,
   },
 ];
+
+function dateFieldHeader(label: string) {
+  return (
+    <div className="flex items-center space-x-1">
+      <span>
+        <CiCalendar />
+      </span>
+      <span>{label}</span>
+    </div>
+  );
+}
+function dateFieldCell(date: Date) {
+  return (
+    <div className="flex flex-col space-y-1 items-start justify-center">
+      <span>
+        {date.toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })}
+      </span>
+      <span>
+        {date.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </span>
+    </div>
+  );
+}
