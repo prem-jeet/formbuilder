@@ -27,7 +27,7 @@ export const RightOverlay = ({
             className="h-full w-full absolute animate-in fade-in top-0 left-0 bg-slate-400 bg-opacity-20"
             onClick={onClose}
           ></div>
-          <div className="absolute top-0 right-0 h-full w-1/4 shadow-xl rounded-lg p-4 overflow-x-hidden overflow-y-auto bg-white space-y-8">
+          <div className="absolute top-0 flex flex-col right-0 h-full w-1/4 shadow-xl rounded-lg p-4 overflow-x-hidden overflow-y-auto bg-white space-y-8">
             <div className="flex items-center justify-between">
               <span className="text-xl font-medium">{header}</span>
               <button
@@ -37,7 +37,9 @@ export const RightOverlay = ({
                 <RiCloseFill />
               </button>
             </div>
-            <div>{children}</div>
+            <div className=" flex-grow overflow-auto flex flex-col">
+              {children}
+            </div>
           </div>
         </motion.div>
       )}

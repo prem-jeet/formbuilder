@@ -26,7 +26,9 @@ export type Success = {
 
 export type ApiResponse = Error | Success;
 
-export const createEnum = async (newEnum: Enum): Promise<ApiResponse> => {
+export const createEnum = async (
+  newEnum: Omit<Enum, "id" | "updated" | "created">
+): Promise<ApiResponse> => {
   const validate = EnumFormSchema.safeParse(newEnum);
   if (!validate.success) {
     return { success: false, msg: "validation error" };
