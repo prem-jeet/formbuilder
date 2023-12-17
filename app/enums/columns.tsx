@@ -21,7 +21,9 @@ export const columns: ColumnDef<Enum>[] = [
       <input
         type="checkbox"
         checked={row.getIsSelected()}
-        onChange={(e) => row.toggleSelected(e.target.checked)}
+        onChange={(e) => {
+          row.toggleSelected(e.target.checked);
+        }}
         className="checkbox"
       />
     ),

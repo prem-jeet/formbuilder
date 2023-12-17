@@ -14,6 +14,8 @@ import {
 import { useEffect, useState } from "react";
 import { Enum } from "./new/formAction";
 import DeleteSelectedRowsPopup from "./DeleteSelectedRowsPopup";
+import { RightOverlay } from "@/components/RightOverlay";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -28,7 +30,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [filterBy, setFilterBy] = useState("name");
   const [rowSelection, setRowSelection] = useState({});
-
+  const [isEditOverlayVisible, setIsEditOverlayVisible] = useState(false);
   const table = useReactTable({
     data,
     columns,
@@ -123,7 +125,14 @@ export function DataTable<TData, TValue>({
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="outline-1 outline outline-slate-100"
+                        onClick={() => {
+                          if (!cell.id.includes("select")) {
+                            setIsEditOverlayVisible(true);
+                          }
+                        }}
+                        className={cn("outline-1 outline outline-slate-100", {
+                          "cursor-pointer": !cell.id.includes("select"),
+                        })}
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -153,6 +162,14 @@ export function DataTable<TData, TValue>({
           }
         />
       )}
+
+      <RightOverlay
+        header="Edit Enum"
+        isVisible={isEditOverlayVisible}
+        onClose={() => setIsEditOverlayVisible(false)}
+      >
+        hello
+      </RightOverlay>
     </>
   );
 }
