@@ -3,7 +3,7 @@ import { NewEnumForm } from "./NewEnumForm";
 
 const CreateEnums = () => {
   return (
-    <div className="mt-10">
+    <div className="flex justify-center mt-10 ">
       <NewEnumForm />
     </div>
   );
