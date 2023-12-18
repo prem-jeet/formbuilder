@@ -1,5 +1,4 @@
 "use client";
-import { ImCheckboxChecked } from "react-icons/im";
 import {
   ColumnDef,
   flexRender,
@@ -17,6 +16,7 @@ import { Enum } from "./new/formAction";
 import DeleteSelectedRowsPopup from "./DeleteSelectedRowsPopup";
 import { RightOverlay } from "@/components/RightOverlay";
 import { cn } from "@/lib/utils";
+import { EditEnumFrom } from "./EditEnumForm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,7 +36,14 @@ export function DataTable<TData, TValue>({
     created: false,
   });
   const [isEditOverlayVisible, setIsEditOverlayVisible] = useState(false);
-
+  const [editingRow, setEditingRow] = useState<Enum>({
+    name: "",
+    label: "",
+    id: "",
+    options: [],
+    updated: "",
+    created: "",
+  });
   const table = useReactTable({
     data,
     columns,
@@ -170,6 +177,7 @@ export function DataTable<TData, TValue>({
                         key={cell.id}
                         onClick={() => {
                           if (!cell.id.includes("select")) {
+                            setEditingRow(row.original as Enum);
                             setIsEditOverlayVisible(true);
                           }
                         }}
@@ -211,7 +219,7 @@ export function DataTable<TData, TValue>({
         isVisible={isEditOverlayVisible}
         onClose={() => setIsEditOverlayVisible(false)}
       >
-        hello
+        <EditEnumFrom row={editingRow} />
       </RightOverlay>
     </>
   );
