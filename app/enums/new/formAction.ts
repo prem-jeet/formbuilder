@@ -66,3 +66,45 @@ export const createEnum = async (
     return { success: false, msg: "some unexpected error occured!" };
   }
 };
+
+export const updateEnum = async (
+  updatedEnum: Omit<Enum, "id" | "updated" | "created">,
+  id: string
+): Promise<ApiResponse> => {
+  const validate = EnumFormSchema.safeParse(updatedEnum);
+  if (!validate.success) {
+    return { success: false, msg: "validation error" };
+  }
+
+  try {
+    if (API_ENDPOINT) {
+      const rsp = await fetch(`${API_ENDPOINT}/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedEnum),
+        cache: "no-store",
+      });
+      const res = await rsp.json();
+
+      if (res.message) {
+        const error = res.data as { [key: string]: { message: string } };
+        return {
+          success: false,
+          msg: Object.entries(error).reduce(
+            (acc, entry) => acc + `${entry[0]}  ${entry[1].message}\n`,
+            ""
+          ),
+        };
+      } else {
+        revalidatePath("/emums", "page");
+        return { data: { ...res }, success: true };
+      }
+    } else {
+      throw new Error("");
+    }
+  } catch (e) {
+    return { success: false, msg: "some unexpected error occured!" };
+  }
+};

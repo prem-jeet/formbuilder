@@ -7,11 +7,11 @@ import { IoIosWarning } from "react-icons/io";
 import toast from "react-hot-toast";
 import { createEnum } from "./formAction";
 
-function removeExtraSpaces(str: string) {
+export function removeExtraSpaces(str: string) {
   return str.trim().replace(/\s+/g, " ");
 }
 
-function formatString(inputString: string) {
+export function formatString(inputString: string) {
   inputString = removeExtraSpaces(inputString);
 
   // Replace the remaining space with an underscore
@@ -20,12 +20,15 @@ function formatString(inputString: string) {
   return inputString;
 }
 
-const processArrayString = (str: string) => {
+export const processArrayString = (str: string) => {
   if (!str) {
     return [];
   }
 
-  const strArray = str.split(",").map((s) => formatString(s));
+  const strArray = str
+    .split(",")
+    .filter((s) => !!s)
+    .map((s) => formatString(s));
 
   return strArray;
 };
@@ -39,7 +42,7 @@ export function SubmitButton() {
   );
 }
 
-const FormErrorAlert = (msg: string) => {
+export const FormErrorAlert = (msg: string) => {
   return (
     <div
       role="alert"

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Enum } from "./new/formAction";
+import { Enum, updateEnum } from "./new/formAction";
 import { MdKey } from "react-icons/md";
 import { LuAsterisk } from "react-icons/lu";
+import { FormErrorAlert, processArrayString } from "./new/NewEnumForm";
+import { EnumFormSchema } from "@/validationSchemas/validationSchemas";
+import toast from "react-hot-toast";
 type Props = {
   row: Enum;
   onCancel: () => void;
@@ -16,9 +19,46 @@ export const EditEnumFrom = ({ row, onCancel }: Props) => {
     setInitialState({ ...row, options: row.options.join(",") });
     console.log(row);
   }, [row]);
+
+  const formAction = async (fd: FormData) => {
+    const newEnumObject = {
+      name: fd.get("name") as string,
+      label: fd.get("label") as string,
+      options: Array.from(
+        new Set(processArrayString(fd.get("options") as string))
+      ),
+    };
+
+    const validate = EnumFormSchema.safeParse(newEnumObject);
+
+    if (!validate.success) {
+      const errors: { [key: string]: string[] } =
+        validate.error.formErrors.fieldErrors;
+      for (let key in errors) {
+        toast.custom(
+          FormErrorAlert(`${key.toLocaleUpperCase()} : ${errors[key]}`)
+        );
+      }
+      return;
+    }
+
+    const rsp = await updateEnum(newEnumObject, initialState.id);
+    onCancel();
+    setTimeout(() => {
+      if (!rsp.success) {
+        toast.custom(FormErrorAlert(rsp.msg));
+      } else {
+        toast.success("Enum updated successfully!", { position: "top-center" });
+      }
+    }, 250);
+  };
+
   return (
     <div className="flex flex-1">
-      <form action="" className="flex flex-col justify-between w-full px-3">
+      <form
+        action={formAction}
+        className="flex flex-col justify-between w-full px-3"
+      >
         <div className="flex flex-col items-center space-y-4">
           <label className="w-full max-w-xs form-control">
             <div className="label">
@@ -49,6 +89,7 @@ export const EditEnumFrom = ({ row, onCancel }: Props) => {
             <input
               value={formState.name}
               type="text"
+              name="name"
               onChange={(e) =>
                 setFormState((prev) => ({ ...prev, name: e.target.value }))
               }
@@ -70,6 +111,7 @@ export const EditEnumFrom = ({ row, onCancel }: Props) => {
             <input
               value={formState.label}
               type="text"
+              name="label"
               onChange={(e) =>
                 setFormState((prev) => ({ ...prev, label: e.target.value }))
               }
@@ -89,6 +131,7 @@ export const EditEnumFrom = ({ row, onCancel }: Props) => {
               </span>
             </div>
             <textarea
+              name="options"
               rows={6}
               value={formState.options}
               onChange={(e) =>
