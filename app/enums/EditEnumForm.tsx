@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Enum } from "./new/formAction";
 import { MdKey } from "react-icons/md";
+import { LuAsterisk } from "react-icons/lu";
 type Props = {
   row: Enum;
   onCancel: () => void;
 };
-
 const formDate = { id: "", name: "", label: "", options: "" };
 
 export const EditEnumFrom = ({ row, onCancel }: Props) => {
@@ -36,7 +36,15 @@ export const EditEnumFrom = ({ row, onCancel }: Props) => {
           </label>
           <label className="w-full max-w-xs form-control">
             <div className="label">
-              <span className="label-text">Name</span>
+              <span className="label-text">
+                <span className="flex">
+                  <span className="mr-2 font-bold text-zinc-300">T</span>
+                  Name
+                  <span>
+                    <LuAsterisk className="text-red-600" />
+                  </span>
+                </span>
+              </span>
             </div>
             <input
               value={formState.name}
@@ -49,7 +57,15 @@ export const EditEnumFrom = ({ row, onCancel }: Props) => {
           </label>
           <label className="w-full max-w-xs form-control">
             <div className="label">
-              <span className="label-text">Label</span>
+              <span className="label-text">
+                <span className="flex">
+                  <span className="mr-2 font-bold text-zinc-300">T</span>
+                  Label
+                  <span>
+                    <LuAsterisk className="text-red-600" />
+                  </span>
+                </span>
+              </span>
             </div>
             <input
               value={formState.label}
@@ -62,7 +78,15 @@ export const EditEnumFrom = ({ row, onCancel }: Props) => {
           </label>
           <label className="w-full max-w-xs form-control">
             <div className="label">
-              <span className="label-text">Options</span>
+              <span className="label-text">
+                <span className="flex">
+                  <span className="mr-2 font-bold text-zinc-300">{"[ ]"}</span>
+                  Options
+                  <span>
+                    <LuAsterisk className="text-red-600" />
+                  </span>
+                </span>
+              </span>
             </div>
             <textarea
               rows={6}

@@ -43,7 +43,7 @@ const FormErrorAlert = (msg: string) => {
   return (
     <div
       role="alert"
-      className="alert bg-red-100 text-lg text-rose-950 max-w-lg"
+      className="max-w-lg text-lg bg-red-100 alert text-rose-950"
     >
       <IoIosWarning />
       <span>{msg}</span>
@@ -85,16 +85,17 @@ export const NewEnumForm = () => {
   };
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="shadow-xl card w-96 bg-base-100">
       <div className="card-body">
         <h2 className="card-title">Add enum</h2>
         <hr />
         <form action={formAction} ref={formRef}>
           <div className="flex flex-col space-y-4">
-            <label className="form-control w-full max-w-xs">
+            <label className="w-full max-w-xs form-control">
               <div className="label">
                 <span className="label-text">
                   <span className="flex">
+                    <span className="mr-2 font-bold text-zinc-300">T</span>
                     Name
                     <span>
                       <LuAsterisk className="text-red-600" />
@@ -105,14 +106,15 @@ export const NewEnumForm = () => {
               <input
                 type="text"
                 placeholder="Name of the enum"
-                className="input input-bordered w-full max-w-xs"
+                className="w-full max-w-xs input input-bordered"
                 name="name"
               />
             </label>
-            <label className="form-control w-full max-w-xs">
+            <label className="w-full max-w-xs form-control">
               <div className="label">
                 <span className="label-text">
                   <span className="flex">
+                    <span className="mr-2 font-bold text-zinc-300">T</span>
                     Label
                     <span>
                       <LuAsterisk className="text-red-600" />
@@ -123,14 +125,17 @@ export const NewEnumForm = () => {
               <input
                 type="text"
                 placeholder="Display label for enum"
-                className="input input-bordered w-full max-w-xs"
+                className="w-full max-w-xs input input-bordered"
                 name="label"
               />
             </label>
-            <label className="form-control w-full max-w-xs">
+            <label className="w-full max-w-xs form-control">
               <div className="label">
                 <span className="label-text">
                   <span className="flex">
+                    <span className="mr-2 font-bold text-zinc-300">
+                      {"[ ]"}
+                    </span>
                     Options
                     <span>
                       <LuAsterisk className="text-red-600" />
@@ -140,13 +145,13 @@ export const NewEnumForm = () => {
               </div>
               <textarea
                 placeholder="Comma(,) seperated values (option1,option2...)"
-                className="textarea textarea-bordered w-full max-w-xs"
+                className="w-full max-w-xs textarea textarea-bordered"
                 rows={5}
                 name="options"
               />
             </label>
           </div>
-          <div className="card-actions justify-end mt-8">
+          <div className="justify-end mt-8 card-actions">
             <SubmitButton />
             <button
               onClick={() => formRef.current?.reset()}
