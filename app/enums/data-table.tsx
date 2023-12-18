@@ -97,8 +97,12 @@ export function DataTable<TData, TValue>({
               }}
               className="w-auto max-w-xs select select-bordered join-item"
             >
-              <option value="name">Name</option>
-              <option value="label">Label</option>
+              <option value="name" className="text-lg font-bold">
+                Name
+              </option>
+              <option value="label" className="text-lg font-bold">
+                Label
+              </option>
             </select>
           </div>
           <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
