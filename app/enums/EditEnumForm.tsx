@@ -14,11 +14,21 @@ const formDate = { id: "", name: "", label: "", options: "" };
 export const EditEnumFrom = ({ row, onCancel }: Props) => {
   const [initialState, setInitialState] = useState({ ...formDate });
   const [formState, setFormState] = useState({ ...formDate });
+  const [isValueChanged, setIsValueChanged] = useState(false);
+
   useEffect(() => {
     setFormState({ ...row, options: row.options.join(",") });
     setInitialState({ ...row, options: row.options.join(",") });
     console.log(row);
   }, [row]);
+
+  useEffect(() => {
+    setIsValueChanged(
+      formState.name !== initialState.name ||
+        formState.label !== initialState.label ||
+        formState.options !== initialState.options
+    );
+  }, [formState]);
 
   const formAction = async (fd: FormData) => {
     const newEnumObject = {
@@ -150,7 +160,10 @@ export const EditEnumFrom = ({ row, onCancel }: Props) => {
           >
             Cancel
           </button>
-          <button className="py-1 text-xl px-9 btn btn-neutral btn-outline">
+          <button
+            className="py-1 text-xl px-9 btn btn-neutral btn-outline"
+            disabled={!isValueChanged}
+          >
             Save
           </button>
         </div>
