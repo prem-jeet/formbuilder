@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <div className="space-y-3">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div className="join">
             <div>
               <div>
@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
                 .filter((column) => column.id !== "select")
                 .map((column) => (
                   <li key={column.id} className="form-control">
-                    <label className="label cursor-pointer justify-start">
+                    <label className="justify-start cursor-pointer label">
                       <input
                         type="checkbox"
                         checked={column.getIsVisible()}
@@ -128,7 +128,7 @@ export function DataTable<TData, TValue>({
                         disabled={!column.getCanHide()}
                         className="checkbox checkbox-sm checkbox-info"
                       />
-                      <span className="label-text uppercase">{column.id}</span>
+                      <span className="uppercase label-text">{column.id}</span>
                     </label>
                   </li>
                 ))}
@@ -219,7 +219,10 @@ export function DataTable<TData, TValue>({
         isVisible={isEditOverlayVisible}
         onClose={() => setIsEditOverlayVisible(false)}
       >
-        <EditEnumFrom row={editingRow} />
+        <EditEnumFrom
+          row={editingRow}
+          onCancel={() => setIsEditOverlayVisible(false)}
+        />
       </RightOverlay>
     </>
   );

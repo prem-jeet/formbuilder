@@ -3,11 +3,12 @@ import { Enum } from "./new/formAction";
 import { MdKey } from "react-icons/md";
 type Props = {
   row: Enum;
+  onCancel: () => void;
 };
 
 const formDate = { id: "", name: "", label: "", options: "" };
 
-export const EditEnumFrom = ({ row }: Props) => {
+export const EditEnumFrom = ({ row, onCancel }: Props) => {
   const [initialState, setInitialState] = useState({ ...formDate });
   const [formState, setFormState] = useState({ ...formDate });
   useEffect(() => {
@@ -75,7 +76,13 @@ export const EditEnumFrom = ({ row }: Props) => {
         </div>
 
         <div className="flex justify-end space-x-3">
-          <button className="py-1 text-md px-9 btn btn-ghost">Cancel</button>
+          <button
+            className="py-1 text-md px-9 btn btn-ghost"
+            type="button"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
           <button className="py-1 text-xl px-9 btn btn-neutral btn-outline">
             Save
           </button>
