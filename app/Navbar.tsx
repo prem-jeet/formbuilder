@@ -7,7 +7,7 @@ import { FaPlus } from "react-icons/fa";
 export const Navbar = () => {
   const pathname = usePathname();
   const links = [
-    { label: "Forms", href: "/" },
+    { label: "Forms", href: "/forms" },
     { label: "Enums", href: "/enums" },
   ];
   return (
