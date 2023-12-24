@@ -19,10 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="light">
       <body className={inter.className}>
-        <div className="min-h-screen bg-zinc-50">
+        <div className="min-h-screen flex  flex-col bg-zinc-50">
           <Navbar />
-          <main className="flex py-10 ">
-            <div className="container px-3 mx-auto">{children}</div>
+          <main className="flex py-10 flex-1">
+            <div className="px-14 flex-1">{children}</div>
           </main>
         </div>
         <div>

@@ -11,8 +11,8 @@ export const Navbar = () => {
     { label: "Enums", href: "/enums" },
   ];
   return (
-    <div className="navbar bg-base-100 py-4">
-      <div className="container mx-auto">
+    <div className="navbar bg-base-100 py-4 flex-none">
+      <div className="flex-1 px-9">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">Formbuilder</a>
         </div>

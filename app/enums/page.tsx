@@ -9,9 +9,9 @@ const EnumsPage = async () => {
   const rsp = await fetchEnums();
 
   return (
-    <div className="flex items-center flex-col space-y-9">
-      <div className="flex self-stretch items-center justify-between">
-        <span className="text-3xl text-zinc-800 font-bold">Enumns list</span>
+    <div className="flex flex-col space-y-9">
+      <div className="flex items-center self-stretch justify-between">
+        <span className="text-3xl font-bold text-zinc-800">Enumns list</span>
         <Link href="/enums/new">
           <button className="btn btn-neutral">
             <FaPlus />
