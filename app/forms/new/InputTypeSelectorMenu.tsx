@@ -1,21 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import useNewFormStore, {
+  AvailableInputTypes,
+  FormEntity,
+} from "@/store/demoStore/newFormStore/newFormStore";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-export interface FormEntity {
-  id: string;
-  type: AvailableInputTypes | "column" | "section";
-  label: string | null;
-  name: string | null;
-  mendatory?: boolean;
-  parentId: string | null;
-  childCount?: number;
-}
-export type AvailableInputTypes =
-  | "text"
-  | "select"
-  | "checkbox"
-  | "long-text"
-  | "number";
 
 const availableInputType: AvailableInputTypes[] = [
   "text",
@@ -25,12 +14,12 @@ const availableInputType: AvailableInputTypes[] = [
   "number",
 ];
 
-interface Props {
-  addInputField: (newEntity: FormEntity) => void;
-}
-
-const InputTypeSelectorMenu = ({ addInputField }: Props) => {
+const InputTypeSelectorMenu = () => {
   const [fieldFilter, setFieldFilter] = useState("");
+  const { addInput, addNewFormLayout } = useNewFormStore((state) => ({
+    addInput: state.addInput,
+    addNewFormLayout: state.addNewFormLayout,
+  }));
 
   const filteredAvailableInputTypes = availableInputType.filter((type) =>
     type.includes(fieldFilter.toLocaleLowerCase())
@@ -44,10 +33,13 @@ const InputTypeSelectorMenu = ({ addInputField }: Props) => {
       parentId: null,
       type,
     };
-
-    addInputField({ ...newEntity });
+    addInput(type);
   };
 
+  useEffect(() => {
+    addNewFormLayout();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <div className="space-y-4">
