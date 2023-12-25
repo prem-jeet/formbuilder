@@ -16,9 +16,10 @@ const availableInputType: AvailableInputTypes[] = [
 
 const InputTypeSelectorMenu = () => {
   const [fieldFilter, setFieldFilter] = useState("");
-  const { addInput, addNewFormLayout } = useNewFormStore((state) => ({
+
+  const { addInput, initialLayoutSetup } = useNewFormStore((state) => ({
     addInput: state.addInput,
-    addNewFormLayout: state.addNewFormLayout,
+    initialLayoutSetup: state.initialSetup,
   }));
 
   const filteredAvailableInputTypes = availableInputType.filter((type) =>
@@ -37,7 +38,7 @@ const InputTypeSelectorMenu = () => {
   };
 
   useEffect(() => {
-    addNewFormLayout();
+    initialLayoutSetup();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

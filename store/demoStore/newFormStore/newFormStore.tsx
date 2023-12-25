@@ -37,7 +37,7 @@ const generateInitialLayout = (): FormLayout => {
           type: "section",
           label: null,
           name: null,
-          parentId: null,
+          parentId: formId,
           childCount: 2,
         },
       ],
@@ -63,6 +63,7 @@ type Actions = {
   clearLayoutData: (id: string) => void;
   addEmptySection: (formId: string) => void;
   addNewFormLayout: () => string;
+  initialSetup: () => void;
   getActiveFormLayout: () => FormLayout;
 };
 
@@ -74,16 +75,17 @@ const useNewFormStore = create<State & Actions>()((set, get) => ({
   addEmptySection: (formId: string) => {},
   addNewFormLayout: () => {
     const newLayout = { ...generateInitialLayout() };
-    console.log(
-      "🚀 ~ file: newFormStore.tsx:77 ~ useNewFormStore ~ newLayout:",
-      newLayout
-    );
+
     set((state) => ({
       formLayout: [...state.formLayout, { ...newLayout }],
       currentlyActiveLayout: newLayout.id,
     }));
 
     return newLayout.id;
+  },
+  initialSetup: () => {
+    const shouldAddLayout = get().formLayout.length === 0;
+    shouldAddLayout && get().addNewFormLayout();
   },
   getActiveFormLayout: () =>
     get().formLayout.find(
