@@ -61,7 +61,7 @@ type State = {
 type Actions = {
   addInput: (type: AvailableInputTypes) => void;
   clearLayoutData: (id: string) => void;
-  addEmptySection: (formId: string) => void;
+  addEmptySection: (formId: string, sectionId: string) => void;
   addNewFormLayout: () => string;
   initialSetup: () => void;
   getActiveFormLayout: () => FormLayout;
@@ -72,7 +72,32 @@ const useNewFormStore = create<State & Actions>()((set, get) => ({
   currentlyActiveLayout: "",
   addInput: (type: AvailableInputTypes) => console.log(type),
   clearLayoutData: (id: string) => set((state) => ({ formLayout: [] })),
-  addEmptySection: (formId: string) => {},
+  addEmptySection: (formId: string, sectionId: string) => {
+    const index = get().formLayout.findIndex((layout) => layout.id === formId);
+    if (index !== -1) {
+      const layout = structuredClone(get().formLayout[index]);
+      const sections = [...layout.layout.sections];
+      const sectionIndex = sections.findIndex(
+        (section) => section.id === sectionId
+      );
+      const newSection = {
+        id: crypto.randomUUID(),
+        type: "section" as const,
+        label: null,
+        name: null,
+        parentId: formId,
+        childCount: 2,
+      };
+      layout.layout.sections = [
+        ...sections.slice(0, sectionIndex + 1),
+        { ...newSection },
+        ...sections.slice(sectionIndex + 1),
+      ];
+      set((state) => ({
+        formLayout: state.formLayout.map((l) => (l.id === formId ? layout : l)),
+      }));
+    }
+  },
   addNewFormLayout: () => {
     const newLayout = { ...generateInitialLayout() };
 

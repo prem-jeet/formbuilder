@@ -11,7 +11,7 @@ const FormBuilder = () => {
   const [selectedSection, setSelectedSection] = useState("");
   return (
     <div>
-      <div>
+      <div className="space-y-4">
         {sections &&
           sections.map((section, index) => {
             return (
@@ -52,6 +52,9 @@ function SectionComponent({
   isSelected: boolean;
   onClick: () => void;
 }) {
+  const { addEmptySection } = useNewFormStore((state) => ({
+    addEmptySection: state.addEmptySection,
+  }));
   return (
     <div
       onClick={clickHandler}
@@ -78,7 +81,13 @@ function SectionComponent({
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <div>Add section</div>
+                <div
+                  onClick={() =>
+                    addEmptySection(section.parentId as string, section.id)
+                  }
+                >
+                  Add section
+                </div>
               </li>
               {enableDelete && (
                 <li>
