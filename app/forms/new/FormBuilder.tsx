@@ -43,6 +43,7 @@ const FormBuilder = () => {
                   {getChildColumns(section.id).map((column, index) => (
                     <div className="flex-grow self-stretch" key={column.id}>
                       <FormbuilderColumn
+                        formId={section.parentId}
                         column={column}
                         isFirst={index === 0}
                         isLast={
@@ -71,6 +72,7 @@ const FormBuilder = () => {
 export default FormBuilder;
 
 const FormbuilderColumn = ({
+  formId,
   children,
   column,
   isFirst,
@@ -79,6 +81,7 @@ const FormbuilderColumn = ({
   isSelected,
   onClick: clickHandler,
 }: {
+  formId: string;
   children: React.ReactNode;
   column: FormEntity;
   isFirst: boolean;
@@ -87,6 +90,9 @@ const FormbuilderColumn = ({
   isSelected: boolean;
   onClick: () => void;
 }) => {
+  const { addColumn } = useNewFormStore((state) => ({
+    addColumn: state.addEmptyColumn,
+  }));
   return (
     <div
       onClick={(e) => {
@@ -116,7 +122,11 @@ const FormbuilderColumn = ({
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <div>Add column</div>
+                <div
+                  onClick={() => addColumn(formId, column.id, column.parentId)}
+                >
+                  Add column
+                </div>
               </li>
               {enableDelete && (
                 <li>

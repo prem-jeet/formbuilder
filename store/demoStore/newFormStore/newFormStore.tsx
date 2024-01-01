@@ -62,6 +62,11 @@ type Actions = {
   addInput: (type: AvailableInputTypes) => void;
   clearLayoutData: (id: string) => void;
   addEmptySection: (formId: string, sectionId: string) => void;
+  addEmptyColumn: (
+    foemId: string,
+    currColumnId: string,
+    parentId: string
+  ) => void;
   addNewFormLayout: () => string;
   initialSetup: () => void;
   getActiveFormLayout: () => FormLayout;
@@ -147,6 +152,36 @@ const useNewFormStore = create<State & Actions>()((set, get) => ({
           ),
         }));
       }
+    }
+  },
+  addEmptyColumn: (formId: string, currcolumnId: string, parentId: string) => {
+    const layout = get().formLayout.find(({ id }) => id === formId);
+    if (layout) {
+      const newLayout = structuredClone(layout);
+      const columns = [...layout.layout.columns];
+      const currColumnIndex = columns.findIndex(
+        (column) => column.id === currcolumnId
+      );
+      const newColumn = {
+        id: crypto.randomUUID(),
+        type: "column" as const,
+        label: null,
+        name: null,
+        parentId: parentId,
+        childCount: 0,
+      };
+      const newColumnsLayout = [
+        ...columns.slice(0, currColumnIndex + 1),
+        { ...newColumn },
+        ...columns.slice(currColumnIndex + 1),
+      ];
+      newLayout.layout.columns = [...newColumnsLayout];
+
+      set((state) => ({
+        formLayout: state.formLayout.map((l) =>
+          l.id === formId ? newLayout : l
+        ),
+      }));
     }
   },
 }));
