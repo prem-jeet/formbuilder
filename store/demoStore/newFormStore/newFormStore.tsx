@@ -75,6 +75,12 @@ type Actions = {
     sectionId: string,
     direction: "up" | "down"
   ) => void;
+  moveWithinParentContainer: (
+    formId: string,
+    entityType: "column" | "field",
+    direction: "up" | "down",
+    targetId: string
+  ) => void;
 };
 
 const useNewFormStore = create<State & Actions>()((set, get) => ({
@@ -126,34 +132,7 @@ const useNewFormStore = create<State & Actions>()((set, get) => ({
     get().formLayout.find(
       (layout) => layout.id === get().currentlyActiveLayout
     ) as FormLayout,
-  moveSectionUp: (
-    formId: string,
-    sectionId: string,
-    direction: "up" | "down"
-  ) => {
-    const index = get().formLayout.findIndex((layout) => layout.id === formId);
-    if (index !== -1) {
-      const layout = structuredClone(get().formLayout[index]);
-      const sections = [...layout.layout.sections];
-      const currentSectionIndex = sections.findIndex(
-        (section) => section.id === sectionId
-      );
-      if (currentSectionIndex >= 0) {
-        const swapIndex = currentSectionIndex + (direction === "up" ? -1 : 1);
-        const swapWith = { ...sections[swapIndex] };
-        sections[swapIndex] = {
-          ...sections[currentSectionIndex],
-        };
-        sections[currentSectionIndex] = { ...swapWith };
-        layout.layout.sections = [...sections];
-        set((state) => ({
-          formLayout: state.formLayout.map((l) =>
-            l.id === formId ? layout : l
-          ),
-        }));
-      }
-    }
-  },
+
   addEmptyColumn: (formId: string, currcolumnId: string, parentId: string) => {
     const layout = get().formLayout.find(({ id }) => id === formId);
     if (layout) {
@@ -182,6 +161,70 @@ const useNewFormStore = create<State & Actions>()((set, get) => ({
           l.id === formId ? newLayout : l
         ),
       }));
+    }
+  },
+  moveSectionUp: (
+    formId: string,
+    sectionId: string,
+    direction: "up" | "down"
+  ) => {
+    const index = get().formLayout.findIndex((layout) => layout.id === formId);
+    if (index !== -1) {
+      const layout = structuredClone(get().formLayout[index]);
+      const sections = [...layout.layout.sections];
+      const currentSectionIndex = sections.findIndex(
+        (section) => section.id === sectionId
+      );
+      if (currentSectionIndex >= 0) {
+        const swapIndex = currentSectionIndex + (direction === "up" ? -1 : 1);
+        const swapWith = { ...sections[swapIndex] };
+        sections[swapIndex] = {
+          ...sections[currentSectionIndex],
+        };
+        sections[currentSectionIndex] = { ...swapWith };
+        layout.layout.sections = [...sections];
+        set((state) => ({
+          formLayout: state.formLayout.map((l) =>
+            l.id === formId ? layout : l
+          ),
+        }));
+      }
+    }
+  },
+  moveWithinParentContainer: (
+    formId: string,
+    entityType: "column" | "field",
+    direction: "up" | "down",
+    targetId: string
+  ) => {
+    const key = entityType === "column" ? "columns" : "fields";
+    const layout = structuredClone(
+      get().formLayout.find((layout) => layout.id === formId)
+    );
+    if (layout) {
+      const targetArray = layout.layout[key];
+      const ogCurrIndex = targetArray.findIndex(({ id }) => id === targetId);
+      const currEntity = { ...targetArray[ogCurrIndex] };
+
+      const filteredArr = targetArray.filter(
+        ({ parentId }) => parentId === currEntity.parentId
+      );
+      const tempCurrIndex = filteredArr.findIndex(({ id }) => id === targetId);
+      const swapEntity = {
+        ...filteredArr[tempCurrIndex + (direction === "up" ? 1 : -1)],
+      };
+      const ogSwapIndex = targetArray.findIndex(
+        ({ id }) => id === swapEntity.id
+      );
+
+      targetArray[ogCurrIndex] = { ...swapEntity };
+      targetArray[ogSwapIndex] = { ...currEntity };
+      layout.layout[key] = [...targetArray];
+
+      set((state) => ({
+        formLayout: state.formLayout.map((l) => (l.id === formId ? layout : l)),
+      }));
+      console.log("called");
     }
   },
 }));
