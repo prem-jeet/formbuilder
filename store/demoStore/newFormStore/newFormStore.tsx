@@ -6,7 +6,7 @@ export type FormEntity = {
   label: string | null;
   name: string | null;
   mendatory?: boolean;
-  parentId: string | null;
+  parentId: string;
   childCount?: number;
 };
 export type FormLayout = {
@@ -65,6 +65,11 @@ type Actions = {
   addNewFormLayout: () => string;
   initialSetup: () => void;
   getActiveFormLayout: () => FormLayout;
+  moveSectionUp: (
+    formId: string,
+    sectionId: string,
+    direction: "up" | "down"
+  ) => void;
 };
 
 const useNewFormStore = create<State & Actions>()((set, get) => ({
@@ -116,6 +121,34 @@ const useNewFormStore = create<State & Actions>()((set, get) => ({
     get().formLayout.find(
       (layout) => layout.id === get().currentlyActiveLayout
     ) as FormLayout,
+  moveSectionUp: (
+    formId: string,
+    sectionId: string,
+    direction: "up" | "down"
+  ) => {
+    const index = get().formLayout.findIndex((layout) => layout.id === formId);
+    if (index !== -1) {
+      const layout = structuredClone(get().formLayout[index]);
+      const sections = [...layout.layout.sections];
+      const currentSectionIndex = sections.findIndex(
+        (section) => section.id === sectionId
+      );
+      if (currentSectionIndex >= 0) {
+        const swapIndex = currentSectionIndex + (direction === "up" ? -1 : 1);
+        const swapWith = { ...sections[swapIndex] };
+        sections[swapIndex] = {
+          ...sections[currentSectionIndex],
+        };
+        sections[currentSectionIndex] = { ...swapWith };
+        layout.layout.sections = [...sections];
+        set((state) => ({
+          formLayout: state.formLayout.map((l) =>
+            l.id === formId ? layout : l
+          ),
+        }));
+      }
+    }
+  },
 }));
 
 export default useNewFormStore;

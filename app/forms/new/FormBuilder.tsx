@@ -52,8 +52,10 @@ function SectionComponent({
   isSelected: boolean;
   onClick: () => void;
 }) {
-  const { addEmptySection } = useNewFormStore((state) => ({
+  const { addEmptySection, moveUp, moveDowm } = useNewFormStore((state) => ({
     addEmptySection: state.addEmptySection,
+    moveUp: () => state.moveSectionUp(section.parentId, section.id, "up"),
+    moveDowm: () => state.moveSectionUp(section.parentId, section.id, "down"),
   }));
   return (
     <div
@@ -95,12 +97,12 @@ function SectionComponent({
                 </li>
               )}
               {!isFirst && (
-                <li>
+                <li onClick={moveUp}>
                   <div>Move up</div>
                 </li>
               )}
               {!isLast && (
-                <li>
+                <li onClick={moveDowm}>
                   <div>Move down</div>
                 </li>
               )}
