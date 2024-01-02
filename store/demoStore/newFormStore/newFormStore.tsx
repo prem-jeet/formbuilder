@@ -60,7 +60,7 @@ type State = {
 
 type Actions = {
   addInput: (
-    type: AvailableInputTypes,
+    inputType: AvailableInputTypes,
     parentId: string,
     formId: string
   ) => void;
@@ -90,8 +90,28 @@ type Actions = {
 const useNewFormStore = create<State & Actions>()((set, get) => ({
   formLayout: [],
   currentlyActiveLayout: "",
-  addInput: (type: AvailableInputTypes, parentId: string, formId: string) => {
-    console.log({ type, parentId, formId });
+  addInput: (
+    inputType: AvailableInputTypes,
+    parentId: string,
+    formId: string
+  ) => {
+    const layout = structuredClone(
+      get().formLayout.find(({ id }) => id === formId)
+    );
+    if (layout) {
+      const newInput = {
+        id: crypto.randomUUID(),
+        type: inputType,
+        label: null,
+        name: null,
+        parentId: parentId,
+        childCount: 0,
+      };
+      layout.layout.fields.push({ ...newInput });
+      set((state) => ({
+        formLayout: state.formLayout.map((l) => (l.id === formId ? layout : l)),
+      }));
+    }
   },
   clearLayoutData: (id: string) => set((state) => ({ formLayout: [] })),
   addEmptySection: (formId: string, sectionId: string) => {

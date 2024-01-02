@@ -18,6 +18,8 @@ const FormBuilder = ({ selectedInputType, clearSelectedInput }: Props) => {
   const addInput = useNewFormStore((state) => state.addInput);
   const sections = formLayout?.layout.sections;
   const columns = formLayout?.layout.columns;
+  const fields = formLayout?.layout.fields;
+
   const [selectedSection, setSelectedSection] = useState("");
   const [selectedColumn, setselectedColumn] = useState("");
   const clearSelections = () => {
@@ -27,6 +29,8 @@ const FormBuilder = ({ selectedInputType, clearSelectedInput }: Props) => {
 
   const getChildColumns = (sectionId: string) =>
     columns.filter((column) => column.parentId === sectionId);
+  const getChildFields = (columnId: string) =>
+    fields.filter((field) => field.parentId === columnId);
 
   useEffect(() => {
     if (selectedInputType) {
@@ -83,7 +87,9 @@ const FormBuilder = ({ selectedInputType, clearSelectedInput }: Props) => {
                         }}
                         isSelected={selectedColumn === column.id}
                       >
-                        {column.id}
+                        {getChildFields(column.id).map((field) => (
+                          <div key={field.id}>{field.id}</div>
+                        ))}
                       </FormbuilderColumn>
                     </div>
                   ))}
