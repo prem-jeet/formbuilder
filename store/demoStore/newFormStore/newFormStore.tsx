@@ -109,6 +109,16 @@ const useNewFormStore = create<State & Actions>()((set, get) => ({
         { ...newSection },
         ...sections.slice(sectionIndex + 1),
       ];
+      for (let i = 0; i < 2; i++) {
+        layout.layout.columns.push({
+          id: crypto.randomUUID(),
+          type: "column" as const,
+          label: null,
+          name: null,
+          parentId: newSection.id,
+          childCount: 0,
+        });
+      }
       set((state) => ({
         formLayout: state.formLayout.map((l) => (l.id === formId ? layout : l)),
       }));
