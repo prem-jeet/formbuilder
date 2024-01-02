@@ -59,7 +59,11 @@ type State = {
 };
 
 type Actions = {
-  addInput: (type: AvailableInputTypes) => void;
+  addInput: (
+    type: AvailableInputTypes,
+    parentId: string,
+    formId: string
+  ) => void;
   clearLayoutData: (id: string) => void;
   addEmptySection: (formId: string, sectionId: string) => void;
   addEmptyColumn: (
@@ -86,7 +90,9 @@ type Actions = {
 const useNewFormStore = create<State & Actions>()((set, get) => ({
   formLayout: [],
   currentlyActiveLayout: "",
-  addInput: (type: AvailableInputTypes) => console.log(type),
+  addInput: (type: AvailableInputTypes, parentId: string, formId: string) => {
+    console.log({ type, parentId, formId });
+  },
   clearLayoutData: (id: string) => set((state) => ({ formLayout: [] })),
   addEmptySection: (formId: string, sectionId: string) => {
     const index = get().formLayout.findIndex((layout) => layout.id === formId);

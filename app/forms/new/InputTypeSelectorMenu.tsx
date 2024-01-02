@@ -14,10 +14,14 @@ const availableInputType: AvailableInputTypes[] = [
   "number",
 ];
 
-const InputTypeSelectorMenu = () => {
+type Props = {
+  onchange: (type: AvailableInputTypes) => void;
+};
+
+const InputTypeSelectorMenu = ({ onchange }: Props) => {
   const [fieldFilter, setFieldFilter] = useState("");
 
-  const { addInput, initialLayoutSetup } = useNewFormStore((state) => ({
+  const { initialLayoutSetup } = useNewFormStore((state) => ({
     addInput: state.addInput,
     initialLayoutSetup: state.initialSetup,
   }));
@@ -26,16 +30,7 @@ const InputTypeSelectorMenu = () => {
     type.includes(fieldFilter.toLocaleLowerCase())
   );
 
-  const createInput = (type: AvailableInputTypes) => {
-    const newEntity: FormEntity = {
-      label: null,
-      name: null,
-      id: (() => crypto.randomUUID())(),
-      parentId: null,
-      type,
-    };
-    addInput(type);
-  };
+  const createInput = (type: AvailableInputTypes) => onchange(type);
 
   useEffect(() => {
     initialLayoutSetup();

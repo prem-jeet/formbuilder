@@ -1,15 +1,21 @@
 "use client";
 import useNewFormStore, {
+  AvailableInputTypes,
   FormEntity,
 } from "@/store/demoStore/newFormStore/newFormStore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormbuilderSection from "./FormbuilderSection";
-import { cn } from "@/lib/utils";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import FormbuilderColumn from "./FormbuilderColumn";
+import toast from "react-hot-toast";
 
-const FormBuilder = () => {
+type Props = {
+  selectedInputType: AvailableInputTypes | "";
+  clearSelectedInput: () => void;
+};
+
+const FormBuilder = ({ selectedInputType, clearSelectedInput }: Props) => {
   const formLayout = useNewFormStore((state) => state.getActiveFormLayout());
+  const addInput = useNewFormStore((state) => state.addInput);
   const sections = formLayout?.layout.sections;
   const columns = formLayout?.layout.columns;
   const [selectedSection, setSelectedSection] = useState("");
@@ -21,6 +27,26 @@ const FormBuilder = () => {
 
   const getChildColumns = (sectionId: string) =>
     columns.filter((column) => column.parentId === sectionId);
+
+  useEffect(() => {
+    if (selectedInputType) {
+      if (!selectedColumn) {
+        toast.error("No column selected.", {
+          className: "border-2 border-rose-500 p-4 text-xl font-medium",
+          iconTheme: {
+            primary: "#f43f5e",
+            secondary: "#fafaff",
+          },
+          position: "top-center",
+        });
+      } else {
+        addInput(selectedInputType, selectedColumn, formLayout.id);
+      }
+      clearSelectedInput();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedInputType]);
+  // eslint-enable-next-line react-hooks/exhaustive-deps
 
   return (
     <div>
