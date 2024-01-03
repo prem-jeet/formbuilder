@@ -38,7 +38,7 @@ const FormbuilderColumn = ({
         clickHandler();
       }}
       className={cn(
-        "p-4 space-y-4 rounded-lg cursor-pointer outline outline-zinc-400 hover:outline-black outline-1",
+        "p-4 space-y-4 rounded-lg cursor-pointer outline outline-zinc-400 hover:outline-black outline-1 bg-zinc-100",
         {
           "outline-black": isSelected,
         }
