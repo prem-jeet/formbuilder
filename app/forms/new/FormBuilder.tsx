@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import FormbuilderSection from "./FormbuilderSection";
 import FormbuilderColumn from "./FormbuilderColumn";
 import toast from "react-hot-toast";
+import FormBuilderField from "./FormBuilderField";
 
 type Props = {
   selectedInputType: AvailableInputTypes | "";
@@ -22,9 +23,12 @@ const FormBuilder = ({ selectedInputType, clearSelectedInput }: Props) => {
 
   const [selectedSection, setSelectedSection] = useState("");
   const [selectedColumn, setselectedColumn] = useState("");
+  const [selectedField, setselectedField] = useState("");
+
   const clearSelections = () => {
     setSelectedSection("");
     setselectedColumn("");
+    setselectedField("");
   };
 
   const getChildColumns = (sectionId: string) =>
@@ -72,7 +76,15 @@ const FormBuilder = ({ selectedInputType, clearSelectedInput }: Props) => {
               >
                 <div className="flex gap-4">
                   {getChildColumns(section.id).map((column, index) => (
-                    <div className="flex-grow self-stretch" key={column.id}>
+                    <div
+                      className="flex-grow self-stretch"
+                      key={column.id}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearSelections();
+                        setselectedColumn(column.id);
+                      }}
+                    >
                       <FormbuilderColumn
                         formId={section.parentId}
                         column={column}
@@ -81,14 +93,24 @@ const FormBuilder = ({ selectedInputType, clearSelectedInput }: Props) => {
                           index === getChildColumns(section.id).length - 1
                         }
                         enableDelete={getChildColumns(section.id).length > 1}
-                        onClick={() => {
-                          clearSelections();
-                          setselectedColumn(column.id);
-                        }}
                         isSelected={selectedColumn === column.id}
                       >
                         {getChildFields(column.id).map((field) => (
-                          <div key={field.id}>{field.id}</div>
+                          <div
+                            key={field.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedSection("");
+                              setselectedField(field.id);
+                            }}
+                          >
+                            <FormBuilderField
+                              fieldEntity={field}
+                              parentColumn={column}
+                              formId={formLayout.id}
+                              isSelected={selectedField === field.id}
+                            />
+                          </div>
                         ))}
                       </FormbuilderColumn>
                     </div>

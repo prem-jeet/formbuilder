@@ -13,7 +13,6 @@ const FormbuilderColumn = ({
   isLast,
   enableDelete,
   isSelected,
-  onClick: clickHandler,
 }: {
   formId: string;
   children: React.ReactNode;
@@ -22,7 +21,6 @@ const FormbuilderColumn = ({
   isLast: boolean;
   enableDelete: boolean;
   isSelected: boolean;
-  onClick: () => void;
 }) => {
   const { addColumn, moveLeft, moveRight } = useNewFormStore((state) => ({
     addColumn: state.addEmptyColumn,
@@ -33,10 +31,6 @@ const FormbuilderColumn = ({
   }));
   return (
     <div
-      onClick={(e) => {
-        e.stopPropagation();
-        clickHandler();
-      }}
       className={cn(
         "p-4 space-y-4 rounded-lg cursor-pointer outline outline-zinc-400 hover:outline-black outline-1 bg-zinc-100",
         {
@@ -86,7 +80,7 @@ const FormbuilderColumn = ({
         </div>
       )}
 
-      <div>{children}</div>
+      <div className="space-y-4">{children}</div>
     </div>
   );
 };
